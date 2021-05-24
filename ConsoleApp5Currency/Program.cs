@@ -9,7 +9,7 @@ namespace ConsoleApp5Currency
 
         private static void Main(string[] args)
         {
-            int noOfRates = 0;
+            int noOfRates = 1;
             BLogicLayer bLayer = new BLogicLayer(_filePath);
 
             //Checking if rate list file already exist or not
@@ -30,7 +30,7 @@ namespace ConsoleApp5Currency
                     {
                         Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
                         Console.WriteLine("Creating rate list again ... \n");
-                        noOfRates =  AddRateList(bLayer);
+                        noOfRates = AddRateList(bLayer);
                     }
                     catch (Exception exc)
                     {
@@ -48,16 +48,10 @@ namespace ConsoleApp5Currency
             {
                 noOfRates = AddRateList(bLayer);
             }
-            
 
-            if(noOfRates > 0)
+            if (noOfRates > 0)
             {
                 CalculateCurrency(bLayer);
-            }
-            else
-            {
-                Console.WriteLine("No record found for rate list, try changing the path!!");
-                Console.WriteLine("Exiting....");
             }
         }
 
@@ -160,7 +154,9 @@ namespace ConsoleApp5Currency
                 }
                 catch (Exception exc)
                 {
-                    Console.WriteLine("Exception Occured : " + exc.Message);
+                    Console.WriteLine("Exception Occured : \n" + exc.Message);
+                    Console.WriteLine("Try changing the path!!");
+                    Console.WriteLine("Exiting....");
                     break;
                 }
             }
