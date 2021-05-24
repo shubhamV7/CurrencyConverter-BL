@@ -25,6 +25,12 @@ namespace ConsoleApp5Currency
                     {
                         bLayer.GetRateList();
                     }
+                    catch (FormatException fExc)
+                    {
+                        Console.WriteLine("Format Exception Occured (while parsing float value from file)" + fExc.Message);
+                        Console.WriteLine("Creating rate list again ... ");
+                        AddRateList(bLayer);
+                    }
                     catch (Exception exc)
                     {
                         Console.WriteLine("Exception Occured " + exc.Message);
