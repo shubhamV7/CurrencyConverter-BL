@@ -27,14 +27,14 @@ namespace ConsoleApp5Currency
                     }
                     catch (FormatException fExc)
                     {
-                        Console.WriteLine("Format Exception Occured (while parsing float value from file)" + fExc.Message);
-                        Console.WriteLine("Creating rate list again ... ");
+                        Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
+                        Console.WriteLine("Creating rate list again ... \n");
                         AddRateList(bLayer);
                     }
                     catch (Exception exc)
                     {
-                        Console.WriteLine("Exception Occured " + exc.Message);
-                        Console.WriteLine("Creating rate list again ... ");
+                        Console.WriteLine("Exception Occured \n" + exc.Message);
+                        Console.WriteLine("Creating rate list again ... \n");
                         AddRateList(bLayer);
                     }
                 }
