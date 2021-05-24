@@ -173,7 +173,11 @@ namespace ConsoleApp5Currency
         /// Method to take and validate currency rate
         /// </summary>
         /// <returns>float currency rate</returns>
+<<<<<<< HEAD
+        private static float InputCurrencyRate()
+=======
         internal static float InputCurrencyRate()
+>>>>>>> cc7b89c15f9b7f472af30930932f28f22d0a854a
         {
             float rate;
             do
@@ -196,7 +200,11 @@ namespace ConsoleApp5Currency
         /// Method to take and validate currency symbol
         /// </summary>
         /// <returns>string currency symbol</returns>
+<<<<<<< HEAD
+        private static string InputCurrencySymbol()
+=======
         internal static string InputCurrencySymbol()
+>>>>>>> cc7b89c15f9b7f472af30930932f28f22d0a854a
         {
             string currency;
             do
@@ -220,7 +228,11 @@ namespace ConsoleApp5Currency
         /// Method to take and validate choice inputs (y/n)
         /// </summary>
         /// <returns>char either 'y' or 'n'</returns>
+<<<<<<< HEAD
+        private static char InputChoice()
+=======
         internal static char InputChoice()
+>>>>>>> cc7b89c15f9b7f472af30930932f28f22d0a854a
         {
             char ch;
             do
@@ -245,4 +257,8 @@ namespace ConsoleApp5Currency
             return char.ToLower(ch);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> cc7b89c15f9b7f472af30930932f28f22d0a854a

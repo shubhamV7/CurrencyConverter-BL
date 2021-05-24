@@ -77,7 +77,7 @@ namespace CurrencyConverter_BL_DataLayer
             Dictionary<string, float> rateList = new Dictionary<string, float>();
             try
             {
-                rateList = File.ReadAllLines(_filePath)
+                rateList = File.ReadAllLines(FilePath)
                                 .Select(x =>
                                         new KeyValuePair<string, float>(x.Split(',')[0], float.Parse(x.Split(',')[1])))
                                 .ToDictionary(t => t.Key, t => t.Value);
