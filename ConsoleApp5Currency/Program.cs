@@ -7,7 +7,7 @@ namespace ConsoleApp5Currency
     {
         private static string _filePath = @".\CurrencyValues.txt";
 
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             BLogicLayer bLayer = new BLogicLayer(_filePath);
 
