@@ -7,7 +7,7 @@ namespace ConsoleApp5Currency
     {
         private static string _filePath = @".\CurrencyValues.txt";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             BLogicLayer bLayer = new BLogicLayer(_filePath);
 
@@ -25,9 +25,9 @@ namespace ConsoleApp5Currency
                     {
                         bLayer.GetRateList();
                     }
-                    catch(Exception exc)
+                    catch (Exception exc)
                     {
-                        Console.WriteLine("Exception Occured "+ exc.Message);
+                        Console.WriteLine("Exception Occured " + exc.Message);
                         Console.WriteLine("Creating rate list again ... ");
                         AddRateList(bLayer);
                     }
@@ -140,9 +140,10 @@ namespace ConsoleApp5Currency
                         }
                     }
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
-                    Console.WriteLine("Exception Occured : "+ exc.Message);
+                    Console.WriteLine("Exception Occured : " + exc.Message);
+                    break;
                 }
             }
         }
@@ -245,7 +246,4 @@ namespace ConsoleApp5Currency
             return char.ToLower(ch);
         }
     }
-
 }
-
-
