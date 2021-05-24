@@ -9,6 +9,7 @@ namespace ConsoleApp5Currency
 
         private static void Main(string[] args)
         {
+            int noOfRates = 0;
             BLogicLayer bLayer = new BLogicLayer(_filePath);
 
             //Checking if rate list file already exist or not
@@ -29,25 +30,35 @@ namespace ConsoleApp5Currency
                     {
                         Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
                         Console.WriteLine("Creating rate list again ... \n");
-                        AddRateList(bLayer);
+                        noOfRates =  AddRateList(bLayer);
                     }
                     catch (Exception exc)
                     {
                         Console.WriteLine("Exception Occured \n" + exc.Message);
                         Console.WriteLine("Creating rate list again ... \n");
-                        AddRateList(bLayer);
+                        noOfRates = AddRateList(bLayer);
                     }
                 }
                 else
                 {
-                    AddRateList(bLayer);
+                    noOfRates = AddRateList(bLayer);
                 }
             }
             else
             {
-                AddRateList(bLayer);
+                noOfRates = AddRateList(bLayer);
             }
-            CalculateCurrency(bLayer);
+            
+
+            if(noOfRates > 0)
+            {
+                CalculateCurrency(bLayer);
+            }
+            else
+            {
+                Console.WriteLine("No record found for rate list, try changing the path!!");
+                Console.WriteLine("Exiting....");
+            }
         }
 
         /// <summary>
@@ -97,7 +108,8 @@ namespace ConsoleApp5Currency
         /// <summary>
         /// Method to add new Currency conversion rates
         /// </summary>
-        private static void AddRateList(BLogicLayer bLayer)
+        /// <returns>integer - no. of rates added to list</returns>
+        private static int AddRateList(BLogicLayer bLayer)
         {
             int count = 0;
             float rate;
@@ -152,6 +164,7 @@ namespace ConsoleApp5Currency
                     break;
                 }
             }
+            return count;
         }
 
         /// <summary>
