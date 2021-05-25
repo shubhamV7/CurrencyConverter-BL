@@ -1,5 +1,6 @@
 ﻿using CurrencyConverter_BL_BLogic;
 using System;
+using System.IO;
 
 namespace ConsoleApp5Currency
 {
@@ -9,49 +10,54 @@ namespace ConsoleApp5Currency
 
         private static void Main(string[] args)
         {
-            int noOfRates = 1;
             BLogicLayer bLayer = new BLogicLayer(_filePath);
+            Program pgrm = new Program();
 
-            //Checking if rate list file already exist or not
-            if (bLayer.CheckIfExist())
+            try
             {
-                Console.WriteLine("Do you want to continue with the existing conversion rate list " +
-                    "\n or create a new conversion rate list\n" +
-                    " y - Continue with existing \n n - Create New ");
-
-                char ch = InputChoice();
-                if (ch == 'y')
+                //Checking if rate list file already exist or not
+                if (bLayer.CheckIfExist())
                 {
-                    try
+                    Console.WriteLine("Do you want to continue with the existing conversion rate list " +
+                        "\n or create a new conversion rate list\n" +
+                        " y - Continue with existing \n n - Create New ");
+
+                    char ch = InputChoice();
+                    if (ch == 'y')
                     {
-                        bLayer.GetRateList();
+                        try
+                        {
+                            bLayer.GetRateList();
+                        }
+                        catch (FormatException fExc)
+                        {
+                            Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
+                            Console.WriteLine("Try creating rate list again ... \n");
+                            pgrm.AddRateList(bLayer);
+                        }
+                        catch (FileNotFoundException fexc)
+                        {
+                            Console.WriteLine("\n" + fexc.Message);
+                            Console.WriteLine("Try creating rate list again ... \n");
+                            pgrm.AddRateList(bLayer);
+                        }
                     }
-                    catch (FormatException fExc)
+                    else
                     {
-                        Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
-                        Console.WriteLine("Creating rate list again ... \n");
-                        noOfRates = AddRateList(bLayer);
-                    }
-                    catch (Exception exc)
-                    {
-                        Console.WriteLine("Exception Occured \n" + exc.Message);
-                        Console.WriteLine("Creating rate list again ... \n");
-                        noOfRates = AddRateList(bLayer);
+                         pgrm.AddRateList(bLayer);
                     }
                 }
                 else
                 {
-                    noOfRates = AddRateList(bLayer);
+                    pgrm.AddRateList(bLayer);
                 }
-            }
-            else
-            {
-                noOfRates = AddRateList(bLayer);
-            }
 
-            if (noOfRates > 0)
+                pgrm.CalculateCurrency(bLayer);
+            }
+            catch (Exception exc)
             {
-                CalculateCurrency(bLayer);
+                Console.WriteLine("Exception Occured : \n" + exc);
+                Console.WriteLine("Exiting....");
             }
         }
 
@@ -59,7 +65,7 @@ namespace ConsoleApp5Currency
         /// Method to start calculating the currency conversions
         /// </summary>
         /// <param name="bLayer"> object of BLogicLayer</param>
-        private static void CalculateCurrency(BLogicLayer bLayer)
+        private void CalculateCurrency(BLogicLayer bLayer)
         {
             double amount;
             string symbol;
@@ -103,7 +109,7 @@ namespace ConsoleApp5Currency
         /// Method to add new Currency conversion rates
         /// </summary>
         /// <returns>integer - no. of rates added to list</returns>
-        private static int AddRateList(BLogicLayer bLayer)
+        private void AddRateList(BLogicLayer bLayer)
         {
             int count = 0;
             float rate;
@@ -134,51 +140,47 @@ namespace ConsoleApp5Currency
                 {
                     if (count == 0)
                     {
-                        //adding first value so to create new file passing true
+                        //adding first value - so to create new file passing true
                         bLayer.AddNewSymbolAndRate(symbol, rate, true);
                         Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
                         ++count;
                     }
                     else
                     {
-                        if (!(bLayer.AddNewSymbolAndRate(symbol, rate, false)))
-                        {
-                            Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
-                        }
-                        else
+                        if (bLayer.AddNewSymbolAndRate(symbol, rate, false))
                         {
                             Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
                             ++count;
                         }
+                        else
+                        {
+                            Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
+                        }
                     }
                 }
-                catch (Exception exc)
+                catch
                 {
-                    Console.WriteLine("Exception Occured : \n" + exc.Message);
-                    Console.WriteLine("Try changing the path!!");
-                    Console.WriteLine("Exiting....");
-                    break;
+                    throw;
                 }
             }
-            return count;
         }
 
         /// <summary>
         /// Method to take and validate amount
         /// </summary>
-        private static double InputAmount()
+        private double InputAmount()
         {
             double amount;
             do
             {
                 Console.Write("Enter Amount to convert : ");
-                if (!double.TryParse(Console.ReadLine(), out amount))
+                if (double.TryParse(Console.ReadLine(), out amount))
                 {
-                    Console.WriteLine("\nInvalid value for amount (must be a double value) try again !!");
+                    break;
                 }
                 else
                 {
-                    break;
+                    Console.WriteLine("\nInvalid value for amount (must be a double value) try again !!");
                 }
             } while (true);
 
@@ -189,19 +191,19 @@ namespace ConsoleApp5Currency
         /// Method to take and validate currency rate
         /// </summary>
         /// <returns>float currency rate</returns>
-        private static float InputCurrencyRate()
+        private float InputCurrencyRate()
         {
             float rate;
             do
             {
                 Console.Write("Enter Currency Rate (in INR) : ");
-                if (!float.TryParse(Console.ReadLine(), out rate))
+                if (float.TryParse(Console.ReadLine(), out rate))
                 {
-                    Console.WriteLine("\nInvalid value for Rate (must be a integer|float value) try again !!");
+                    break;
                 }
                 else
                 {
-                    break;
+                    Console.WriteLine("\nInvalid value for Rate (must be a integer|float value) try again !!");
                 }
             } while (true);
 
@@ -212,7 +214,7 @@ namespace ConsoleApp5Currency
         /// Method to take and validate currency symbol
         /// </summary>
         /// <returns>string currency symbol</returns>
-        private static string InputCurrencySymbol()
+        private string InputCurrencySymbol()
         {
             string currency;
             do
