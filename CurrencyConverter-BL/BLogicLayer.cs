@@ -55,22 +55,27 @@ namespace CurrencyConverter_BL_BLogic
         }
 
         /// <summary>
+        /// Method to check if the symbol is present in rate list or not
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public bool ContainsSymbol(string symbol)
+        {
+            return dictRates.ContainsKey(symbol);
+        }
+
+        /// <summary>
         /// Method to Add new symbol and rate to the rateList
         /// </summary>
         /// <param name="symbol">string symbol</param>
         /// <param name="rate">float rate</param>
         /// <param name="createNew">true if you want to create a new list , false will append new values to existing list</param>
         /// <returns> true - if successfully added <br/> false - if there is already a symbol present with same name </returns>
-        public bool AddNewSymbolAndRate(string symbol, float rate, bool createNew)
+        public void AddNewSymbolAndRate(string symbol, float rate, bool createNew)
         {
             if (createNew)
             {
                 dictRates.Clear();
-            }
-
-            if (dictRates.ContainsKey(symbol))
-            {
-                return false;
             }
 
             try
@@ -82,8 +87,6 @@ namespace CurrencyConverter_BL_BLogic
             {
                 throw;
             }
-
-            return true;
         }
 
         /// <summary>

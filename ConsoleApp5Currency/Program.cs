@@ -147,14 +147,15 @@ namespace ConsoleApp5Currency
                     }
                     else
                     {
-                        if (bLayer.AddNewSymbolAndRate(symbol, rate, false))
+                        if (bLayer.ContainsSymbol(symbol))
                         {
-                            Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
-                            ++count;
+                            Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
                         }
                         else
                         {
-                            Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
+                            bLayer.AddNewSymbolAndRate(symbol, rate, false);
+                            Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
+                            ++count;
                         }
                     }
                 }
