@@ -44,14 +44,7 @@ namespace CurrencyConverter_BL_BLogic
         public void GetRateList()
         {
             //Dictionary<string, float> dictRate = new Dictionary<string, float>();
-            try
-            {
-                this.dictRates = dLayer.LoadRateList();
-            }
-            catch
-            {
-                throw;
-            }
+            this.dictRates = dLayer.LoadRateList();
         }
 
         /// <summary>
@@ -78,15 +71,8 @@ namespace CurrencyConverter_BL_BLogic
                 dictRates.Clear();
             }
 
-            try
-            {
-                dLayer.WriteRateToFile(symbol, rate, createNew);
-                dictRates.Add(symbol, rate);
-            }
-            catch
-            {
-                throw;
-            }
+            dLayer.WriteRateToFile(symbol, rate, createNew);
+            dictRates.Add(symbol, rate);
         }
 
         /// <summary>

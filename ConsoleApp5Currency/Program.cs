@@ -31,20 +31,22 @@ namespace ConsoleApp5Currency
                         }
                         catch (FormatException fExc)
                         {
-                            Console.WriteLine("Format Exception Occured (while parsing float value from file)\n" + fExc.Message);
+                            Console.WriteLine(fExc.Message);
+                            //Console.WriteLine( fExc.StackTrace);
                             Console.WriteLine("Try creating rate list again ... \n");
                             pgrm.AddRateList(bLayer);
                         }
                         catch (FileNotFoundException fexc)
                         {
                             Console.WriteLine("\n" + fexc.Message);
+                            //Console.WriteLine("\n" + fexc.StackTrace);
                             Console.WriteLine("Try creating rate list again ... \n");
                             pgrm.AddRateList(bLayer);
                         }
                     }
                     else
                     {
-                         pgrm.AddRateList(bLayer);
+                        pgrm.AddRateList(bLayer);
                     }
                 }
                 else
@@ -56,7 +58,8 @@ namespace ConsoleApp5Currency
             }
             catch (Exception exc)
             {
-                Console.WriteLine("Exception Occured : \n" + exc);
+                Console.WriteLine(exc.Message);
+                //Console.WriteLine(exc.StackTrace);
                 Console.WriteLine("Exiting....");
             }
         }
@@ -136,32 +139,25 @@ namespace ConsoleApp5Currency
                 symbol = InputCurrencySymbol();
                 rate = InputCurrencyRate();
 
-                try
+                if (count == 0)
                 {
-                    if (count == 0)
+                    //adding first value - so to create new file passing true
+                    bLayer.AddNewSymbolAndRate(symbol, rate, true);
+                    Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
+                    ++count;
+                }
+                else
+                {
+                    if (bLayer.ContainsSymbol(symbol))
                     {
-                        //adding first value - so to create new file passing true
-                        bLayer.AddNewSymbolAndRate(symbol, rate, true);
-                        Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
-                        ++count;
+                        Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
                     }
                     else
                     {
-                        if (bLayer.ContainsSymbol(symbol))
-                        {
-                            Console.WriteLine($"Currency Symbol {symbol} already present, try different symbol : ");
-                        }
-                        else
-                        {
-                            bLayer.AddNewSymbolAndRate(symbol, rate, false);
-                            Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
-                            ++count;
-                        }
+                        bLayer.AddNewSymbolAndRate(symbol, rate, false);
+                        Console.WriteLine($"Currency with Symbol : {symbol} and Rate : {rate} added successfully...\n");
+                        ++count;
                     }
-                }
-                catch
-                {
-                    throw;
                 }
             }
         }

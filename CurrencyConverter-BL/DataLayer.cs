@@ -53,16 +53,9 @@ namespace CurrencyConverter_BL_DataLayer
         /// false - if you want to append into already existing file</param>
         public void WriteRateToFile(string symbol, float rate, bool createNew)
         {
-            try
-            {
-                StreamWriter sw = new StreamWriter(FilePath, !createNew);
-                sw.WriteLine($"{symbol},{rate}");
-                sw.Close();
-            }
-            catch
-            {
-                throw;
-            }
+            StreamWriter sw = new StreamWriter(FilePath, !createNew);
+            sw.WriteLine($"{symbol},{rate}");
+            sw.Close();
         }
 
         /// <summary>
@@ -75,17 +68,10 @@ namespace CurrencyConverter_BL_DataLayer
         public Dictionary<string, float> LoadRateList()
         {
             Dictionary<string, float> rateList = new Dictionary<string, float>();
-            try
-            {
-                rateList = File.ReadAllLines(FilePath)
+            rateList = File.ReadAllLines(FilePath)
                                 .Select(x =>
                                         new KeyValuePair<string, float>(x.Split(',')[0], float.Parse(x.Split(',')[1])))
                                 .ToDictionary(t => t.Key, t => t.Value);
-            }
-            catch
-            {
-                throw;
-            }
 
             return rateList;
         }
